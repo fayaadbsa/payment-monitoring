@@ -66,7 +66,7 @@ export default function LoginPage() {
         const errorData = await res.json().catch(() => ({}));
         setError(errorData.message || "Invalid email or password.");
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Auth API connection failed:", err);
       setError(
         "Unable to connect to live authentication API. Please check if the Go backend is running."

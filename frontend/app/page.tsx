@@ -161,6 +161,7 @@ export default function Dashboard() {
           endDate={endDate}
           minAmount={minAmount}
           maxAmount={maxAmount}
+          isLoading={isLoading}
           onStatusFilter={setStatusFilter}
           onSearchId={setSearchId}
           onSearchMerchant={setSearchMerchant}
@@ -169,6 +170,7 @@ export default function Dashboard() {
           onMinAmount={setMinAmount}
           onMaxAmount={setMaxAmount}
           onReset={handleReset}
+          onRefresh={handleSync}
         />
 
         {/* Table */}

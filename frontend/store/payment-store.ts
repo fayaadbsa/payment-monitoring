@@ -157,7 +157,7 @@ export const usePaymentStore = create<PaymentState>((set, get) => ({
       } else {
         throw new Error(`Server returned code ${res.status}`);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("API connection failed:", err);
       set({
         payments: [],

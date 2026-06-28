@@ -2,8 +2,6 @@
 
 import React from "react";
 
-type SortField = "id" | "merchant" | "created_at" | "amount" | "status";
-
 interface FilterBarProps {
   statusFilter: string;
   searchId: string;
@@ -12,6 +10,7 @@ interface FilterBarProps {
   endDate: string;
   minAmount: string;
   maxAmount: string;
+  isLoading?: boolean;
   onStatusFilter: (v: string) => void;
   onSearchId: (v: string) => void;
   onSearchMerchant: (v: string) => void;
@@ -20,6 +19,7 @@ interface FilterBarProps {
   onMinAmount: (v: string) => void;
   onMaxAmount: (v: string) => void;
   onReset: () => void;
+  onRefresh: () => void;
 }
 
 export function FilterBar({
@@ -30,6 +30,7 @@ export function FilterBar({
   endDate,
   minAmount,
   maxAmount,
+  isLoading = false,
   onStatusFilter,
   onSearchId,
   onSearchMerchant,
@@ -38,6 +39,7 @@ export function FilterBar({
   onMinAmount,
   onMaxAmount,
   onReset,
+  onRefresh,
 }: FilterBarProps) {
   const STATUS_TABS = [
     { id: "all", label: "All" },
@@ -78,15 +80,41 @@ export function FilterBar({
             </button>
           ))}
         </div>
-        {hasActiveFilters && (
+        <div className="flex items-center gap-2">
           <button
-            id="reset-filters-btn"
-            onClick={onReset}
-            className="text-xs font-semibold text-red-600 hover:text-red-700 transition"
+            id="refresh-filters-btn"
+            type="button"
+            onClick={onRefresh}
+            disabled={isLoading}
+            aria-label="Refresh"
+            title="Refresh payments"
+            className="flex items-center gap-1.5 rounded border border-zinc-300 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-700 shadow-sm transition hover:border-zinc-400 hover:text-zinc-900 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Clear all filters
+            <svg
+              className={`h-3.5 w-3.5 ${isLoading ? "animate-spin" : ""}`}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2.5"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+              />
+            </svg>
+            Refresh
           </button>
-        )}
+          {hasActiveFilters && (
+            <button
+              id="reset-filters-btn"
+              onClick={onReset}
+              className="text-xs font-semibold text-red-600 hover:text-red-700 transition"
+            >
+              Clear all filters
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Row 2: Search inputs */}
