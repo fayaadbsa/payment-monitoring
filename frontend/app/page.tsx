@@ -102,13 +102,7 @@ export default function Dashboard() {
 
   return (
     <div className="flex-1 bg-zinc-50/50 min-h-screen pb-16">
-      <DashboardHeader
-        email={user?.email}
-        role={user?.role}
-        isLoading={isLoading}
-        onSync={handleSync}
-        onLogout={logout}
-      />
+      <DashboardHeader email={user?.email} role={user?.role} onLogout={logout} />
 
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-8">
         {/* Error banner */}

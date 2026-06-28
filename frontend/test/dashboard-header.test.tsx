@@ -26,20 +26,5 @@ describe("DashboardHeader", () => {
     expect(onLogout).toHaveBeenCalledOnce();
   });
 
-  it("renders Sync Live button when onSync is provided", () => {
-    const onSync = vi.fn();
-    render(<DashboardHeader {...defaultProps} onSync={onSync} />);
-    const syncBtn = screen.getByRole("button", { name: /sync live/i });
-    expect(syncBtn).toBeInTheDocument();
-
-    fireEvent.click(syncBtn);
-    expect(onSync).toHaveBeenCalledOnce();
-  });
-
-  it("disables Sync Live button when isLoading is active", () => {
-    const onSync = vi.fn();
-    render(<DashboardHeader {...defaultProps} onSync={onSync} isLoading={true} />);
-    const syncBtn = screen.getByRole("button", { name: /sync live/i });
-    expect(syncBtn).toBeDisabled();
-  });
 });
+

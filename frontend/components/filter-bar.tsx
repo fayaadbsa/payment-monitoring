@@ -80,7 +80,18 @@ export function FilterBar({
             </button>
           ))}
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between gap-2">
+          {hasActiveFilters ? (
+            <button
+              id="reset-filters-btn"
+              onClick={onReset}
+              className="text-xs font-semibold text-red-600 hover:text-red-700 transition"
+            >
+              Clear all filters
+            </button>
+          ) : (
+            <span />
+          )}
           <button
             id="refresh-filters-btn"
             type="button"
@@ -105,15 +116,6 @@ export function FilterBar({
             </svg>
             Refresh
           </button>
-          {hasActiveFilters && (
-            <button
-              id="reset-filters-btn"
-              onClick={onReset}
-              className="text-xs font-semibold text-red-600 hover:text-red-700 transition"
-            >
-              Clear all filters
-            </button>
-          )}
         </div>
       </div>
 
