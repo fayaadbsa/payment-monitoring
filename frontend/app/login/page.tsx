@@ -97,10 +97,7 @@ export default function LoginPage() {
               </svg>
             </div>
             <span className="font-outfit text-xl font-bold tracking-tight text-zinc-900">
-              Dupay{" "}
-              <span className="text-red-600 font-medium">
-                Payment Monitor
-              </span>
+              Dupay <span className="text-red-600 font-medium">Payment Monitoring</span>
             </span>
           </div>
         </div>
@@ -210,25 +207,33 @@ export default function LoginPage() {
           {/* Quick Help Box */}
           <div className="mt-6 border-t border-zinc-200 pt-5">
             <p className="font-outfit text-xs font-bold uppercase tracking-wider text-zinc-500">
-              Credentials
+              Quick Fill — click to use
             </p>
-            <div className="mt-2 space-y-1.5 text-sm text-zinc-900">
-              <div className="flex justify-between items-center rounded bg-zinc-150 p-2.5 border border-zinc-300">
-                <span>
-                  Customer Support: <strong className="text-zinc-950 font-extrabold font-outfit">cs@test.com</strong>
-                </span>
-                <span className="font-mono text-xs text-zinc-950 font-bold uppercase tracking-widest bg-white border border-zinc-300 px-2 py-0.5 rounded">
-                  password
-                </span>
-              </div>
-              <div className="flex justify-between items-center rounded bg-zinc-150 p-2.5 border border-zinc-300">
-                <span>
-                  Operations: <strong className="text-zinc-950 font-extrabold font-outfit">operation@test.com</strong>
-                </span>
-                <span className="font-mono text-xs text-zinc-950 font-bold uppercase tracking-widest bg-white border border-zinc-300 px-2 py-0.5 rounded">
-                  password
-                </span>
-              </div>
+            <div className="mt-2 space-y-1.5">
+              {[
+                { label: "Customer Support", email: "cs@test.com", password: "password" },
+                { label: "Operations", email: "operation@test.com", password: "password" },
+              ].map((cred) => (
+                <button
+                  key={cred.email}
+                  type="button"
+                  onClick={() => {
+                    setEmail(cred.email);
+                    setPassword(cred.password);
+                  }}
+                  className="w-full flex justify-between items-center rounded bg-zinc-50 border border-zinc-300 p-2.5 text-sm text-zinc-900 hover:bg-zinc-100 hover:border-zinc-400 transition text-left group"
+                >
+                  <span>
+                    {cred.label}:{" "}
+                    <strong className="text-zinc-950 font-extrabold font-outfit">
+                      {cred.email}
+                    </strong>
+                  </span>
+                  <span className="font-mono text-xs text-zinc-600 font-bold uppercase tracking-widest bg-white border border-zinc-300 px-2 py-0.5 rounded group-hover:border-zinc-400 transition">
+                    password
+                  </span>
+                </button>
+              ))}
             </div>
           </div>
         </div>
