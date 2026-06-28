@@ -22,6 +22,10 @@ dep:
 run:
 	CGO_ENABLED=1 $(go_bin) run main.go
 
+# Run on PowerShell
+run-ps:
+	powershell -Command "$$env:CGO_ENABLED='1'; go run main.go"
+
 build:
 	CGO_ENABLED=1 $(go_bin) build -o bin/mygolangapp main.go
 

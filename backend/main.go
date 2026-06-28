@@ -10,6 +10,10 @@ import (
 	ah "github.com/durianpay/fullstack-boilerplate/internal/module/auth/handler"
 	ar "github.com/durianpay/fullstack-boilerplate/internal/module/auth/repository"
 	au "github.com/durianpay/fullstack-boilerplate/internal/module/auth/usecase"
+	ph "github.com/durianpay/fullstack-boilerplate/internal/module/payment/handler"
+	pr "github.com/durianpay/fullstack-boilerplate/internal/module/payment/repository"
+	"github.com/durianpay/fullstack-boilerplate/internal/module/payment/repository/seed"
+	pu "github.com/durianpay/fullstack-boilerplate/internal/module/payment/usecase"
 	srv "github.com/durianpay/fullstack-boilerplate/internal/service/http"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
@@ -41,11 +45,18 @@ func main() {
 
 	authH := ah.NewAuthHandler(authUC)
 
+	paymentRepo := pr.NewSQLPaymentRepository(db)
+
+	paymentUC := pu.NewPaymentUsecase(paymentRepo)
+
+	paymentH := ph.NewPaymentHandler(paymentUC)
+
 	apiHandler := &api.APIHandler{
-		Auth: authH,
+		Auth:    authH,
+		Payment: paymentH,
 	}
 
-	server := srv.NewServer(apiHandler, config.OpenapiYamlLocation)
+	server := srv.NewServer(apiHandler, config.OpenapiYamlLocation, config.JwtSecret)
 
 	addr := config.HttpAddress
 	log.Printf("starting server on %s", addr)
@@ -60,6 +71,14 @@ func initDB(db *sql.DB) error {
 		  email TEXT NOT NULL UNIQUE,
 		  password_hash TEXT NOT NULL,
 		  role TEXT NOT NULL
+		);`,
+		`CREATE TABLE IF NOT EXISTS payments (
+		  id INTEGER PRIMARY KEY AUTOINCREMENT,
+		  payment_id TEXT NOT NULL UNIQUE,
+		  merchant TEXT NOT NULL,
+		  status TEXT NOT NULL CHECK(status IN ('completed', 'processing', 'failed')),
+		  amount TEXT NOT NULL,
+		  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 		);`,
 	}
 	for _, s := range stmts {
@@ -83,6 +102,20 @@ func initDB(db *sql.DB) error {
 		}
 		if _, err := db.Exec("INSERT INTO users(email, password_hash, role) VALUES (?, ?, ?)", "operation@test.com", string(hash), "operation"); err != nil {
 			return err
+		}
+	}
+
+	// seed payments if not exists
+	var payCnt int
+	payRow := db.QueryRow("SELECT COUNT(1) FROM payments")
+	if err := payRow.Scan(&payCnt); err != nil {
+		return err
+	}
+	if payCnt == 0 {
+		for _, m := range seed.SeedPayments {
+			if _, err := db.Exec("INSERT INTO payments(payment_id, merchant, status, amount, created_at) VALUES (?, ?, ?, ?, ?)", m.PaymentID, m.Merchant, m.Status, m.Amount, m.CreatedAt); err != nil {
+				return err
+			}
 		}
 	}
 
