@@ -50,6 +50,7 @@ var SeedPayments = []MockPayment{
 	{"PAY-1026-D9Z6", "Cloudflare Pro", "completed", "20.00", "2026-06-25T21:40:00Z"},
 	{"PAY-1027-F0A7", "Linktree Pro", "completed", "9.00", "2026-06-25T19:20:00Z"},
 	{"PAY-1028-H1B8", "Canva Premium", "completed", "12.99", "2026-06-25T17:15:00Z"},
+	{"PAY-1029-J2C9", "OpenAI API", "completed", "25.00", "2026-06-25T13:20:00Z"},
 	{"PAY-1030-L3D0", "Tailwind UI", "completed", "249.00", "2026-06-25T11:00:00Z"},
 	{"PAY-1031-N4E1", "Linear App", "completed", "8.00", "2026-06-25T08:30:00Z"},
 	{"PAY-1032-P5F2", "Notion Personal", "completed", "48.00", "2026-06-25T05:20:00Z"},
