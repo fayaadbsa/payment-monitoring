@@ -27,12 +27,42 @@ func (h *PaymentHandler) GetDashboardV1Payments(w http.ResponseWriter, r *http.R
 	if params.Id != nil {
 		id = *params.Id
 	}
+	merchant := ""
+	if params.Merchant != nil {
+		merchant = *params.Merchant
+	}
+	startDate := ""
+	if params.StartDate != nil {
+		startDate = *params.StartDate
+	}
+	endDate := ""
+	if params.EndDate != nil {
+		endDate = *params.EndDate
+	}
+	minAmount := ""
+	if params.MinAmount != nil {
+		minAmount = *params.MinAmount
+	}
+	maxAmount := ""
+	if params.MaxAmount != nil {
+		maxAmount = *params.MaxAmount
+	}
 	sort := ""
 	if params.Sort != nil {
 		sort = *params.Sort
 	}
+	page := 1
+	if params.Page != nil {
+		page = *params.Page
+	}
+	limit := 10
+	if params.Limit != nil {
+		limit = *params.Limit
+	}
 
-	payments, err := h.usecase.ListPayments(r.Context(), status, id, sort)
+	offset := (page - 1) * limit
+
+	payments, total, totalCompleted, totalProcessing, totalFailed, err := h.usecase.ListPayments(r.Context(), status, id, merchant, startDate, endDate, minAmount, maxAmount, sort, limit, offset)
 	if err != nil {
 		transport.WriteError(w, err)
 		return
@@ -56,7 +86,13 @@ func (h *PaymentHandler) GetDashboardV1Payments(w http.ResponseWriter, r *http.R
 	}
 
 	response := openapigen.PaymentListResponse{
-		Payments: &apiPayments,
+		Payments:        &apiPayments,
+		Total:           &total,
+		TotalCompleted:  &totalCompleted,
+		TotalProcessing: &totalProcessing,
+		TotalFailed:     &totalFailed,
+		Page:            &page,
+		Limit:           &limit,
 	}
 
 	w.Header().Set("Content-Type", "application/json")
