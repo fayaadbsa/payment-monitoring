@@ -1,0 +1,115 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap");
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #0f172a;
+
+  --primary: #dc2626; /* Red 600 */
+  --primary-hover: #b91c1c; /* Red 700 */
+  --primary-glow: rgba(220, 38, 38, 0.08);
+
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-outfit: "Outfit", sans-serif;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+/* Custom premium styles */
+
+.font-outfit {
+  font-family: var(--font-outfit);
+}
+
+.glass-panel {
+  background: #ffffff;
+  border: 1px solid #e4e4e7;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.glass-input {
+  background: #ffffff;
+  border: 1px solid #d4d4d8;
+  transition: all 0.15s ease-in-out;
+}
+
+.glass-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--primary-glow);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-stagger-1 {
+  animation-delay: 0.05s;
+}
+.animate-stagger-2 {
+  animation-delay: 0.1s;
+}
+.animate-stagger-3 {
+  animation-delay: 0.15s;
+}
+.animate-stagger-4 {
+  animation-delay: 0.2s;
+}
+.animate-stagger-5 {
+  animation-delay: 0.25s;
+}
+
+/* Status Badges */
+.badge-completed {
+  color: #065f46;
+  background-color: #ecfdf5;
+  border: 1px solid #a7f3d0;
+}
+
+.badge-processing {
+  color: #92400e;
+  background-color: #fffbeb;
+  border: 1px solid #fde68a;
+}
+
+.badge-failed {
+  color: #991b1b;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.3);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.5);
+}
