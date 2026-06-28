@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/durianpay/fullstack-boilerplate/internal/openapigen"
+	"github.com/getkin/kin-openapi/openapi3filter"
 	"github.com/go-chi/chi/v5"
 	oapinethttpmw "github.com/oapi-codegen/nethttp-middleware"
 )
@@ -51,6 +52,11 @@ func NewServer(apiHandler openapigen.ServerInterface, openapiYamlPath string, jw
 		validator := oapinethttpmw.OapiRequestValidatorWithOptions(
 			swagger,
 			&oapinethttpmw.Options{
+				Options: openapi3filter.Options{
+					AuthenticationFunc: func(ctx context.Context, input *openapi3filter.AuthenticationInput) error {
+						return nil
+					},
+				},
 				DoNotValidateServers:  true,
 				SilenceServersWarning: true,
 			},
