@@ -1,4 +1,4 @@
-# Dupay Payment Monitor
+# Payment Monitoring App
 
 This is a full-stack payment monitoring application designed to provide internal teams with real-time insight into incoming payments. The system features a Go backend utilizing SQLite for persistent storage, and a Next.js React frontend for managing authentication and displaying payment records.
 
