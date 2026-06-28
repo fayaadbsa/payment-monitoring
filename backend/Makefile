@@ -9,11 +9,15 @@ GEN_PKG=internal/openapigen
 
 help:
 	@echo "Available targets:"
-	@echo "  make dep        	- install depedencies
+	@echo "  make dep        	- install dependencies"
 	@echo "  make openapi-gen	- generate openapigen result"
 	@echo "  make gen-secret	- generate JWT_SECRET"
 	@echo "  make run        	- Run the app locally (with .env)"
+	@echo "  make run-ps     	- Run on PowerShell (with .env)"
 	@echo "  make build      	- Build binary into ./bin/mygolangapp"
+	@echo "  make test       	- Run backend unit tests"
+	@echo "  make test-ps    	- Run backend unit tests (PowerShell)"
+
 
 dep:
 	@go mod tidy
@@ -22,7 +26,6 @@ dep:
 run:
 	CGO_ENABLED=1 $(go_bin) run main.go
 
-# Run on PowerShell
 run-ps:
 	powershell -Command "$$env:CGO_ENABLED='1'; go run main.go"
 
@@ -39,3 +42,9 @@ openapi-gen: tool-openapi
 gen-secret:
 	@echo "🔐 Generating JWT secret..."
 	@go run ./script/gen-secret/main.go
+
+test:
+	CGO_ENABLED=1 $(go_bin) test -v ./...
+
+test-ps:
+	powershell -Command "$$env:CGO_ENABLED='1'; go test -v ./..."

@@ -1,14 +1,13 @@
-FROM golang:1.24 AS builder
+FROM golang:1.21 AS builder
 WORKDIR /app
 COPY go.mod go.sum ./
-RUN go mod download
+COPY vendor/ vendor/
 COPY . .
-RUN CGO_ENABLED=1 go build -o bin/server main.go
+RUN CGO_ENABLED=1 go build -mod=vendor -o bin/server main.go
 
 FROM debian:bookworm-slim
-RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y ca-certificates libsqlite3-0 && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY --from=builder /app/bin/server /app/server
-COPY --from=builder /app/.env /app/.env
 EXPOSE 8080
 CMD ["/app/server"]

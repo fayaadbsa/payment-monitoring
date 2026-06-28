@@ -1,56 +1,121 @@
-# fullstack app
+# Dupay Payment Monitor
 
-Explain your service in here. This is fulltsack project related Payment using golang as backend and nuxt as frontend....
+This is a full-stack payment monitoring application designed to provide internal teams with real-time insight into incoming payments. The system features a Go backend utilizing SQLite for persistent storage, and a Next.js React frontend for managing authentication and displaying payment records.
 
-list of tools version of your machine:
+---
 
-```bash
-go version go1.25.5 darwin/arm64
-node v24.13.1
-```
+## 🛠️ Prerequisites & Machine Configuration
 
-Install all related requirements:
+- **Go**: Version `1.21+` (requires `CGO_ENABLED=1` for SQLite3 support)
+- **Node.js**: Version `20+`
+- **Docker & Docker Compose** (for containerized execution)
+- **GNU Make**
 
-```bash
-Add here
-```
+---
 
-How to run backend server on local:
+## ⚙️ Installation & Dependency Setup
 
-```bash
-Add here
-```
-
-How to run backend server on production build:
+You can install all dependencies for both backend and frontend by navigating to their respective directories:
 
 ```bash
-Add here
+# Backend dependency setup
+cd backend
+make dep
+
+# Frontend dependency setup
+cd ../frontend
+make install
 ```
 
-How to run frontend on local:
+---
+
+## 🚀 Running the Project
+
+### Using Docker Compose (Quickest & Easiest)
+Bring up both the Go backend and Next.js frontend services in containerized mode:
 
 ```bash
-Add here
+docker compose up --build
+```
+* **Frontend UI**: available at `http://localhost:3000`
+* **Backend API**: available at `http://localhost:8080`
+* **Interactive Swagger UI API Docs**: available at `http://localhost:8080/docs`
+
+---
+
+### Running Locally (Development Mode)
+
+#### 1. Setup Backend
+```bash
+cd backend
+# 1. Setup local environment variables
+cp env.sample .env
+
+# 2. Generate OpenAPI structures & JWT secret key
+make openapi-gen
+make gen-secret
+
+# 3. Run the Go backend server (runs on http://localhost:8080 by default)
+make run
 ```
 
-How to run frontend on production build:
+*Note: The SQLite database (`dashboard.db`) will be automatically initialized and seeded with 50 payment transactions (40 completed, 7 processing, 3 failed) and two users (`cs@test.com` and `operation@test.com` with password `password`).*
+
+#### 2. Setup Frontend
+```bash
+cd frontend
+# 1. Setup environment variables
+cp .env.example .env
+
+# 2. Run the local Next.js development server (runs on http://localhost:3000 by default)
+make run
+```
+
+---
+
+## 🧪 Testing
+
+### Running Go Backend Unit Tests
+To run unit and repository tests locally, your machine must have a C compiler (`gcc`) installed for SQLite support, as CGO is required:
 
 ```bash
-Add here
+cd backend
+# Run backend tests
+make test
+
+# Or on Windows PowerShell
+make test-ps
 ```
 
-To checking openapi documentations, you can visit this url after backend running.
+### Running Frontend Unit Tests
+To run frontend unit tests locally:
 
 ```bash
-Add here
+cd frontend
+make test
 ```
 
-Login to frontend by visiting:
+---
 
-```bash
-Add here
-```
+## 📖 API Documentation
 
-evidences: Add video evidences of your service
-see backend [README.md](backend/README.md)
-see frontend [README.md](frontend/README.md)
+The backend dynamically hosts the API specification using the embedded schema:
+
+- **Swagger UI Interactive Docs**: Visit **`http://localhost:8080/docs`** once the server is running.
+- **Raw JSON Specification**: Visit `http://localhost:8080/swagger.json`
+- **OpenAPI Schema file**: [openapi.yaml](openapi.yaml)
+
+---
+
+## 🔑 Login Credentials
+
+Login to the frontend by visiting `http://localhost:3000/login` using these seeded credentials:
+
+- **Customer Support (CS)**: User `cs@test.com` | Password `password`
+- **Operations Role**: User `operation@test.com` | Password `password`
+
+---
+
+## 🎥 Evidences
+
+- Demo Video: [video-demo.mp4](assets/video-demo.mp4) (Place your recording under `/assets` directory or provide a public link here).

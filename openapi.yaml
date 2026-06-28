@@ -85,6 +85,24 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/Payment'
+              total:
+                type: integer
+                example: 50
+              total_completed:
+                type: integer
+                example: 40
+              total_processing:
+                type: integer
+                example: 7
+              total_failed:
+                type: integer
+                example: 3
+              page:
+                type: integer
+                example: 1
+              limit:
+                type: integer
+                example: 10
     UnauthorizedError:
       description: Authentication failed or missing credentials
       content:
@@ -135,6 +153,43 @@ paths:
           schema:
             type: string
           description: payment id
+        - in: query
+          name: merchant
+          schema:
+            type: string
+          description: merchant name (case-insensitive sub-match)
+        - in: query
+          name: start_date
+          schema:
+            type: string
+          description: filter payments created on or after this date (RFC3339)
+        - in: query
+          name: end_date
+          schema:
+            type: string
+          description: filter payments created on or before this date (RFC3339)
+        - in: query
+          name: min_amount
+          schema:
+            type: string
+          description: filter payments with amount greater than or equal to this value
+        - in: query
+          name: max_amount
+          schema:
+            type: string
+          description: filter payments with amount less than or equal to this value
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: page number for database offset
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 10
+          description: limit of records to retrieve per page
       security:
         - bearerAuth: []
       responses:

@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - dashboard_db:/app/dashboard.db
+    environment:
+      - JWT_SECRET=my-super-secret-key-that-is-at-least-32-bytes-long
+      - JWT_EXPIRED=24h
+      - HTTP_ADDR=:8080
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  dashboard_db:

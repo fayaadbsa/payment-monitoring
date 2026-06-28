@@ -63,7 +63,7 @@ func TestSQLPaymentRepository_GetPayments(t *testing.T) {
 	ctx := context.Background()
 
 	t.Run("filter by status", func(t *testing.T) {
-		res, _, err := repo.GetPayments(ctx, "completed", "", "", "", "", "", "", "", 10, 0)
+		res, _, _, _, _, err := repo.GetPayments(ctx, "completed", "", "", "", "", "", "", "", 10, 0)
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
@@ -78,7 +78,7 @@ func TestSQLPaymentRepository_GetPayments(t *testing.T) {
 	})
 
 	t.Run("filter by partial id", func(t *testing.T) {
-		res, _, err := repo.GetPayments(ctx, "", "3", "", "", "", "", "", "", 10, 0)
+		res, _, _, _, _, err := repo.GetPayments(ctx, "", "3", "", "", "", "", "", "", 10, 0)
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
@@ -91,7 +91,7 @@ func TestSQLPaymentRepository_GetPayments(t *testing.T) {
 	})
 
 	t.Run("sort by created_at desc", func(t *testing.T) {
-		res, _, err := repo.GetPayments(ctx, "", "", "", "", "", "", "", "-created_at", 10, 0)
+		res, _, _, _, _, err := repo.GetPayments(ctx, "", "", "", "", "", "", "", "-created_at", 10, 0)
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
@@ -109,7 +109,7 @@ func TestSQLPaymentRepository_GetPayments(t *testing.T) {
 
 	t.Run("sort by amount numerically", func(t *testing.T) {
 		// Numerical sort verification: 9.99 (PAY-3) < 25.50 (PAY-2) < 150.00 (PAY-1) < 1200.00 (PAY-4)
-		res, _, err := repo.GetPayments(ctx, "", "", "", "", "", "", "", "amount", 10, 0)
+		res, _, _, _, _, err := repo.GetPayments(ctx, "", "", "", "", "", "", "", "amount", 10, 0)
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
