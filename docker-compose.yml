@@ -8,7 +8,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - dashboard_db:/app/dashboard.db
+      - dashboard_db:/app/data
     environment:
       - JWT_SECRET=my-super-secret-key-that-is-at-least-32-bytes-long
       - JWT_EXPIRED=24h
